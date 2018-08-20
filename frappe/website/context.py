@@ -79,6 +79,7 @@ def build_context(context):
 
 	context.update(get_website_settings())
 	context.update(frappe.local.conf.get("website_context") or {})
+	context.title = jinja2.escape(context.title)
 
 	# provide doc
 	if context.doc:
