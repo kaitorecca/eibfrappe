@@ -7,6 +7,7 @@ import frappe, os
 from frappe.website.utils import can_cache, delete_page_cache, extract_title
 from frappe.model.document import get_controller
 from six import text_type
+import jinja2
 
 def resolve_route(path):
 	"""Returns the page route object based on searching in pages and generators.
@@ -47,9 +48,9 @@ def make_page_context(path):
 	context.doctype = context.ref_doctype
 
 	if context.page_title:
-		context.title = context.page_title
+		context.title = str(jinja2.escape(context.page_title))
 
-	context.pathname = frappe.local.path
+	context.pathname =  str(jinja2.escape(frappe.local.path))
 
 	return context
 
