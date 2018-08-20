@@ -14,6 +14,7 @@ from frappe.modules.utils import export_module_json, get_doc_module
 from six.moves.urllib.parse import urlencode
 from frappe.integrations.utils import get_payment_gateway_controller
 from six import iteritems
+import jinja2
 
 
 class WebForm(WebsiteGenerator):
@@ -380,7 +381,7 @@ def accept(web_form, data, for_payment=False):
 			except ValueError:
 				pass
 
-		doc.set(fieldname, value)
+		doc.set(fieldname, str(jinja2.escape(value)))
 
 	if for_payment:
 		web_form.validate_mandatory(doc)
