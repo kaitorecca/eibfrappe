@@ -7,6 +7,7 @@ from frappe.utils import cint, quoted
 from frappe.website.render import resolve_path
 from frappe.model.document import get_controller, Document
 from frappe import _
+import jinja2
 
 no_cache = 1
 no_sitemap = 1
@@ -76,7 +77,7 @@ def get(doctype, txt=None, limit_start=0, limit=20, **kwargs):
 			new_context.update(new_context.doc.as_dict())
 
 		if not frappe.flags.in_test:
-			new_context["pathname"] = frappe.local.request.path.strip("/ ")
+			new_context["pathname"] = str(jinja2.escape(frappe.local.request.path.strip("/ ")))
 		new_context.update(list_context)
 		set_route(new_context)
 		rendered_row = frappe.render_template(row_template, new_context, is_path=True)
