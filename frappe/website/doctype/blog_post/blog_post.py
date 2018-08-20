@@ -9,6 +9,7 @@ from frappe.website.website_generator import WebsiteGenerator
 from frappe.website.render import clear_cache
 from frappe.utils import today, cint, global_date_format, get_fullname, strip_html_tags, markdown
 from frappe.website.utils import find_first_image, get_comment_list
+import jinja2
 
 class BlogPost(WebsiteGenerator):
 	website = frappe._dict(
@@ -98,7 +99,7 @@ def get_list_context(context=None):
 	category = frappe.local.form_dict.blog_category or frappe.local.form_dict.category
 	if category:
 		category_title = get_blog_category(category)
-		list_context.sub_title = _("Posts filed under {0}").format(category_title)
+		list_context.sub_title = _("Posts filed under {0}").format(str(jinja2.escape(category_title)))
 		list_context.title = category_title
 
 	elif frappe.local.form_dict.blogger:
