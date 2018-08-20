@@ -7,6 +7,7 @@ import frappe, os, json
 from frappe.website.doctype.website_settings.website_settings import get_website_settings
 from frappe.website.router import get_page_context
 from frappe.model.document import Document
+import jinja2
 
 def get_context(path, args=None):
 	if args and args.source:
@@ -23,6 +24,8 @@ def get_context(path, args=None):
 	else:
 		context["path"] = path
 
+
+	context["path"] = str(jinja2.escape(context["path"]))
 	context.route = context.path
 
 	context = build_context(context)
