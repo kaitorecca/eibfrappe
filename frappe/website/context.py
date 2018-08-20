@@ -122,7 +122,7 @@ def build_context(context):
 		context.base_template_path = app_base[0] if app_base else "templates/base.html"
 
 	if context.title_prefix and context.title and not context.title.startswith(context.title_prefix):
-		context.title = '{0} - {1}'.format(str(jinja2.escape(context.title_prefix), str(jinja2.escape(context.title))
+		context.title = '{0} - {1}'.format(str(jinja2.escape(context.title_prefix)), str(jinja2.escape(context.title)))
 
 	return context
 
