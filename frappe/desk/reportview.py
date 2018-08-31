@@ -17,10 +17,10 @@ import pymysql
 
 @frappe.whitelist()
 def get():
-	if has_common(["Scanner"], frappe.get_roles()):
-		return {
-			"key": "Please contact with your Administrator"
-		}
+	# if has_common(["Scanner"], frappe.get_roles()):
+	# 	return {
+	# 		"key": "Please contact with your Administrator"
+	# 	}
 
 	args = get_form_params()
 
