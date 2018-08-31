@@ -45,6 +45,10 @@ def sync_user_settings():
 
 @frappe.whitelist()
 def save(doctype, user_settings):
+	if has_common(["Scanner"], frappe.get_roles()):
+		return {
+			"key": "Please contact with your Administrator"
+		}
 	user_settings = json.loads(user_settings or '{}')
 	update_user_settings(doctype, user_settings)
 	return user_settings
