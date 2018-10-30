@@ -134,6 +134,7 @@
 		"public/js/lib/awesomplete/awesomplete.min.js",
 		"public/js/lib/Sortable.min.js",
 		"public/js/lib/jquery/jquery.hotkeys.js",
+		"public/js/lib/jquery/jquery.menu-aim.js",
 		"public/js/lib/summernote/summernote.js",
 		"public/js/lib/bootstrap.min.js",
 		"public/js/lib/moment/moment-with-locales.min.js",
