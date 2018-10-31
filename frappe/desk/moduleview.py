@@ -61,7 +61,7 @@ def generate_module_cache(module):
 
     conn.set(prefix + "cache",1)
     menu_json = json.dumps(get_data_no_permission(module))
-    conn.set(prefix + "data")
+    conn.set(prefix + "data",menu_json)
 
 def get_module_cache(module):
     conn = redis.from_url(conf.get("redis_socketio")
