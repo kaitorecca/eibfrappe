@@ -20,6 +20,23 @@ def get(module):
 	return out
 
 @frappe.whitelist()
+def get_multi(module):
+	"""Returns data (sections, list of reports, counts) to render module view in desk:
+	`/desk/#Module/[name]`."""
+	p_data = []
+	for sub in module.split(","):
+		p_data.append({
+			"modules": sub,
+			"data": get_data(sub)
+			})
+	out = {
+		"data": p_data
+	}
+
+	return out
+
+
+@frappe.whitelist()
 def hide_module(module):
 	set_hidden(module, frappe.session.user, 1)
 	clear_desktop_icons_cache()
