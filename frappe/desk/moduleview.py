@@ -61,7 +61,7 @@ def generate_module_cache(module):
 
     conn.set(prefix + "cache",1)
     menu_json = json.dumps(get_data_no_permission(module))
-    conn.set(prefix + "data",menu_json)
+    conn.set(prefix + "data", menu_json)
 
 def get_module_cache(module):
     conn = redis.from_url(conf.get("redis_socketio")
@@ -72,7 +72,7 @@ def get_module_cache(module):
         generate_module_cache(module)
 
     try:
-        return apply_permissions(json.loads(conn.get(prefix + "data")))
+        return apply_permissions(json.loads(conn.get(prefix + "data")).decode("utf-8"))
 
     except AttributeError:
         generate_module_cache(module)
