@@ -6,6 +6,10 @@ import frappe
 from frappe import _
 from frappe.boot import get_allowed_pages, get_allowed_reports
 from frappe.desk.doctype.desktop_icon.desktop_icon import set_hidden, clear_desktop_icons_cache
+import redis
+import json
+from frappe import conf
+
 
 @frappe.whitelist()
 def get(module):
@@ -27,13 +31,60 @@ def get_multi(module):
 	for sub in module.split(","):
 		p_data.append({
 			"modules": sub,
-			"data": get_data(sub)
+			"data": get_module_cache(sub)
 			})
 	out = {
 		"data": p_data
 	}
 
 	return out
+def get_data_no_permission(module):
+        """Get module data for the module view `desk/#Module/[name]`"""
+    doctype_info = get_doctype_info(module)
+    data = build_config_from_file(module)
+
+    if not data:
+        data = build_standard_config(module, doctype_info)
+    else:
+        add_custom_doctypes(data, doctype_info)
+
+    add_section(data, _("Custom Reports"), "fa fa-list-alt",
+        get_report_list(module))
+
+    data = combine_common_sections(data)
+
+
+    return data
+
+
+def generate_module_cache(module):
+    conn = Redis.from_url(conf.get("redis_socketio")
+            or "redis://localhost:12311")
+    prefix = "menu_cache_"+module+"_"
+
+    conn.set(prefix + "cache",1)
+    menu_json = json.dumps(get_data_no_permission(module))
+    conn.set(prefix + "data")
+
+def get_module_cache(module):
+    conn = Redis.from_url(conf.get("redis_socketio")
+            or "redis://localhost:12311")
+    prefix = "menu_cache_"+module+"_"
+
+    if not conn.exists(prefix + "cache"):
+        generate_module_cache(module)
+
+    try:
+        return apply_permissions(json.loads(conn.get(prefix + "data")))
+
+    except AttributeError:
+        generate_module_cache(module)
+        return get_data(module)
+
+
+
+
+
 
 
 @frappe.whitelist()
