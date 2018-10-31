@@ -38,24 +38,21 @@ def get_multi(module):
 	}
 
 	return out
+
 def get_data_no_permission(module):
-        """Get module data for the module view `desk/#Module/[name]`"""
-    doctype_info = get_doctype_info(module)
-    data = build_config_from_file(module)
 
-    if not data:
-        data = build_standard_config(module, doctype_info)
-    else:
-        add_custom_doctypes(data, doctype_info)
+	doctype_info = get_doctype_info(module)
+	data = build_config_from_file(module)
 
-    add_section(data, _("Custom Reports"), "fa fa-list-alt",
-        get_report_list(module))
+	if not data:
+		data = build_standard_config(module, doctype_info)
+	else:
+		add_custom_doctypes(data, doctype_info)
 
-    data = combine_common_sections(data)
+	add_section(data, _("Custom Reports"), "fa fa-list-alt", get_report_list(module))
+	data = combine_common_sections(data)
 
-
-    return data
-
+	return data
 
 def generate_module_cache(module):
     conn = Redis.from_url(conf.get("redis_socketio")
@@ -80,10 +77,6 @@ def get_module_cache(module):
     except AttributeError:
         generate_module_cache(module)
         return get_data(module)
-
-
-
-
 
 
 
