@@ -72,7 +72,7 @@ def get_module_cache(module):
         generate_module_cache(module)
 
     try:
-        return apply_permissions(json.loads(conn.get(prefix + "data")).decode("utf-8"))
+        return apply_permissions(json.loads(conn.get(prefix + "data").decode("utf-8")))
 
     except AttributeError:
         generate_module_cache(module)
