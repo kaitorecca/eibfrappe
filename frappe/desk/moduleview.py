@@ -55,7 +55,7 @@ def get_data_no_permission(module):
 	return data
 
 def generate_module_cache(module):
-    conn = Redis.from_url(conf.get("redis_socketio")
+    conn = redis.from_url(conf.get("redis_socketio")
             or "redis://localhost:12311")
     prefix = "menu_cache_"+module+"_"
 
